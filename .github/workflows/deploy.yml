@@ -1,0 +1,15 @@
+name: Deployment
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build . -t stevesajustephen/nextjs-app
+      - run: echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
+      - run: docker push stevesajustephen/nextjs-app:tagname
